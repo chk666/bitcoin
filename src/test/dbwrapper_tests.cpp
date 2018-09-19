@@ -1,4 +1,4 @@
-// Copyright (c) 2012-2017 The Bitcoin Core developers
+// Copyright (c) 2012-2018 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,13 +20,13 @@ static bool is_null_key(const std::vector<unsigned char>& key) {
 
     return isnull;
 }
- 
+
 BOOST_FIXTURE_TEST_SUITE(dbwrapper_tests, BasicTestingSetup)
-                       
+
 BOOST_AUTO_TEST_CASE(dbwrapper)
 {
     // Perform tests both obfuscated and non-obfuscated.
-    for (bool obfuscate : {false, true}) {
+    for (const bool obfuscate : {false, true}) {
         fs::path ph = SetDataDir(std::string("dbwrapper").append(obfuscate ? "_true" : "_false"));
         CDBWrapper dbw(ph, (1 << 20), true, false, obfuscate);
         char key = 'k';
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(dbwrapper)
 BOOST_AUTO_TEST_CASE(dbwrapper_batch)
 {
     // Perform tests both obfuscated and non-obfuscated.
-    for (bool obfuscate : {false, true}) {
+    for (const bool obfuscate : {false, true}) {
         fs::path ph = SetDataDir(std::string("dbwrapper_batch").append(obfuscate ? "_true" : "_false"));
         CDBWrapper dbw(ph, (1 << 20), true, false, obfuscate);
 
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(dbwrapper_batch)
 BOOST_AUTO_TEST_CASE(dbwrapper_iterator)
 {
     // Perform tests both obfuscated and non-obfuscated.
-    for (bool obfuscate : {false, true}) {
+    for (const bool obfuscate : {false, true}) {
         fs::path ph = SetDataDir(std::string("dbwrapper_iterator").append(obfuscate ? "_true" : "_false"));
         CDBWrapper dbw(ph, (1 << 20), true, false, obfuscate);
 
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(existing_data_no_obfuscate)
     // Now, set up another wrapper that wants to obfuscate the same directory
     CDBWrapper odbw(ph, (1 << 10), false, false, true);
 
-    // Check that the key/val we wrote with unobfuscated wrapper exists and 
+    // Check that the key/val we wrote with unobfuscated wrapper exists and
     // is readable.
     uint256 res2;
     BOOST_CHECK(odbw.Read(key, res2));
@@ -153,13 +153,13 @@ BOOST_AUTO_TEST_CASE(existing_data_no_obfuscate)
 
     uint256 in2 = InsecureRand256();
     uint256 res3;
- 
+
     // Check that we can write successfully
     BOOST_CHECK(odbw.Write(key, in2));
     BOOST_CHECK(odbw.Read(key, res3));
     BOOST_CHECK_EQUAL(res3.ToString(), in2.ToString());
 }
-                        
+
 // Ensure that we start obfuscating during a reindex.
 BOOST_AUTO_TEST_CASE(existing_data_reindex)
 {
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(existing_data_reindex)
 
     uint256 in2 = InsecureRand256();
     uint256 res3;
- 
+
     // Check that we can write successfully
     BOOST_CHECK(odbw.Write(key, in2));
     BOOST_CHECK(odbw.Read(key, res3));
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(iterator_ordering)
         if (x & 1) BOOST_CHECK(dbw.Write(key, value));
     }
 
-    for (int seek_start : {0x00, 0x80}) {
+    for (const int seek_start : {0x00, 0x80}) {
         it->Seek((uint8_t)seek_start);
         for (unsigned int x=seek_start; x<255; ++x) {
             uint8_t key;
@@ -262,7 +262,7 @@ struct StringContentsSerializer {
                 try {
                     READWRITE(c);
                     str.push_back(c);
-                } catch (const std::ios_base::failure& e) {
+                } catch (const std::ios_base::failure&) {
                     break;
                 }
             }
@@ -291,7 +291,7 @@ BOOST_AUTO_TEST_CASE(iterator_string_ordering)
     }
 
     std::unique_ptr<CDBIterator> it(const_cast<CDBWrapper&>(dbw).NewIterator());
-    for (int seek_start : {0, 5}) {
+    for (const int seek_start : {0, 5}) {
         snprintf(buf, sizeof(buf), "%d", seek_start);
         StringContentsSerializer seek_key(buf);
         it->Seek(seek_key);

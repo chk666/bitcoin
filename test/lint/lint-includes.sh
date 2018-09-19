@@ -47,10 +47,7 @@ fi
 
 EXPECTED_BOOST_INCLUDES=(
     boost/algorithm/string.hpp
-    boost/algorithm/string/case_conv.hpp
     boost/algorithm/string/classification.hpp
-    boost/algorithm/string/join.hpp
-    boost/algorithm/string/predicate.hpp
     boost/algorithm/string/replace.hpp
     boost/algorithm/string/split.hpp
     boost/bind.hpp
@@ -59,7 +56,6 @@ EXPECTED_BOOST_INCLUDES=(
     boost/filesystem.hpp
     boost/filesystem/detail/utf8_codecvt_facet.hpp
     boost/filesystem/fstream.hpp
-    boost/interprocess/sync/file_lock.hpp
     boost/multi_index/hashed_index.hpp
     boost/multi_index/ordered_index.hpp
     boost/multi_index/sequenced_index.hpp
@@ -67,8 +63,6 @@ EXPECTED_BOOST_INCLUDES=(
     boost/optional.hpp
     boost/preprocessor/cat.hpp
     boost/preprocessor/stringize.hpp
-    boost/program_options/detail/config_file.hpp
-    boost/scoped_array.hpp
     boost/signals2/connection.hpp
     boost/signals2/last_value.hpp
     boost/signals2/signal.hpp

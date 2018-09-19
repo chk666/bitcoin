@@ -6,7 +6,7 @@ Some notes on how to build Bitcoin Core in Unix.
 
 Note
 ---------------------
-Always use absolute paths to configure and compile bitcoin and the dependencies,
+Always use absolute paths to configure and compile Bitcoin Core and the dependencies,
 for example, when specifying the path of the dependency:
 
 	../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
@@ -47,7 +47,7 @@ Optional dependencies:
  protobuf    | Payments in GUI  | Data interchange format used for payment protocol (only needed when GUI enabled)
  libqrencode | QR codes in GUI  | Optional for generating QR codes (only needed when GUI enabled)
  univalue    | Utility          | JSON parsing and encoding (bundled version will be used unless --with-system-univalue passed to configure)
- libzmq3     | ZMQ notification | Optional, allows generating ZMQ notifications (requires ZMQ version >= 4.x)
+ libzmq3     | ZMQ notification | Optional, allows generating ZMQ notifications (requires ZMQ version >= 4.0.0)
 
 For the versions used, see [dependencies.md](dependencies.md)
 
@@ -70,7 +70,7 @@ tuned to conserve memory with additional CXXFLAGS:
 
 Build requirements:
 
-    sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3 libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev
+    sudo apt-get install build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils python3 libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-test-dev libboost-thread-dev
 
 BerkeleyDB is required for the wallet.
 
@@ -93,13 +93,13 @@ Optional (see --with-miniupnpc and --enable-upnp-default):
 
     sudo apt-get install libminiupnpc-dev
 
-ZMQ dependencies (provides ZMQ API 4.x):
+ZMQ dependencies (provides ZMQ API):
 
     sudo apt-get install libzmq3-dev
 
 #### Dependencies for the GUI
 
-If you want to build Bitcoin-Qt, make sure that the required packages for Qt development
+If you want to build bitcoin-qt, make sure that the required packages for Qt development
 are installed. Qt 5 is necessary to build the GUI.
 To build without GUI pass `--without-gui`.
 
@@ -178,7 +178,7 @@ If you need to build Boost yourself:
 
 Security
 --------
-To help make your bitcoin installation more secure by making certain attacks impossible to
+To help make your Bitcoin Core installation more secure by making certain attacks impossible to
 exploit even if a vulnerability is found, binaries are hardened by default.
 This can be disabled with:
 
@@ -194,7 +194,7 @@ Hardening enables the following features:
     Build position independent code to take advantage of Address Space Layout Randomization
     offered by some kernels. Attackers who can cause execution of code at an arbitrary memory
     location are thwarted if they don't know where anything useful is located.
-    The stack and heap are randomly located by default but this allows the code section to be
+    The stack and heap are randomly located by default, but this allows the code section to be
     randomly located as well.
 
     On an AMD64 processor where a library was not compiled with -fPIC, this will cause an error
@@ -210,8 +210,8 @@ Hardening enables the following features:
     ET_DYN
 
 * Non-executable Stack
-    If the stack is executable then trivial stack based buffer overflow exploits are possible if
-    vulnerable buffers are found. By default, bitcoin should be built with a non-executable stack
+    If the stack is executable then trivial stack-based buffer overflow exploits are possible if
+    vulnerable buffers are found. By default, Bitcoin Core should be built with a non-executable stack,
     but if one of the libraries it uses asks for an executable stack or someone makes a mistake
     and uses a compiler extension which requires an executable stack, it will silently build an
     executable without the non-executable stack protection.
@@ -219,7 +219,7 @@ Hardening enables the following features:
     To verify that the stack is non-executable after compiling use:
     `scanelf -e ./bitcoin`
 
-    the output should contain:
+    The output should contain:
 	STK/REL/PTL
 	RW- R-- RW-
 
@@ -227,15 +227,14 @@ Hardening enables the following features:
 
 Disable-wallet mode
 --------------------
-When the intention is to run only a P2P node without a wallet, bitcoin may be compiled in
+When the intention is to run only a P2P node without a wallet, Bitcoin Core may be compiled in
 disable-wallet mode with:
 
     ./configure --disable-wallet
 
 In this case there is no dependency on Berkeley DB 4.8.
 
-Mining is also possible in disable-wallet mode, but only using the `getblocktemplate` RPC
-call not `getwork`.
+Mining is also possible in disable-wallet mode using the `getblocktemplate` RPC call.
 
 Additional Configure Flags
 --------------------------
@@ -284,4 +283,3 @@ To build executables for ARM:
 
 
 For further documentation on the depends system see [README.md](../depends/README.md) in the depends directory.
-

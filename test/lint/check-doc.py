@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2017 The Bitcoin Core developers
+# Copyright (c) 2015-2018 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,8 +26,8 @@ SET_DOC_OPTIONAL = set(['-rpcssl', '-benchmark', '-h', '-help', '-socks', '-tor'
 
 
 def main():
-    used = check_output(CMD_GREP_ARGS, shell=True, universal_newlines=True)
-    docd = check_output(CMD_GREP_DOCS, shell=True, universal_newlines=True)
+    used = check_output(CMD_GREP_ARGS, shell=True, universal_newlines=True, encoding='utf8')
+    docd = check_output(CMD_GREP_DOCS, shell=True, universal_newlines=True, encoding='utf8')
 
     args_used = set(re.findall(re.compile(REGEX_ARG), used))
     args_docd = set(re.findall(re.compile(REGEX_DOC), docd)).union(SET_DOC_OPTIONAL)
